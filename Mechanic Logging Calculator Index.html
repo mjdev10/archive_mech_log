@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanic Log System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #86d1fc;
+      margin: 0;
+      padding: 20px;
+    }
+    .form-container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h2 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .parts-section {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .parts-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .parts-buttons button {
+      padding: 6px 10px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .parts-buttons button:hover {
+      background-color: #5a6268;
+    }
+    .parts-applied {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    #installedParts {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fed6d6;
+      border: 1px solid #ffa3a3;
+      border-radius: 4px;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .action-buttons button {
+      flex: 1;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .action-buttons button.undo {
+      background-color: #f44336;
+    }
+    .action-buttons button.undo:hover {
+      background-color: #e53935;
+    }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #333;
+    }
+    #total {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Benny's Mechanic Log System (w/ Calculator)</h2>
+    <div class="form-group">
+      <label for="customerName">Customer Name:</label>
+      <input type="text" id="customerName" placeholder="Enter customer name">
+    </div>
+    <div class="form-group">
+      <label for="mechanicName">Mechanic:</label>
+      <select id="mechanicName">
+        <option value=" "> </option>
+        <option value="Milbert Goba MECH">Milbert Goba MECH</option>
+        <option value="Addi Farkle MECH">Addi Farkle MECH</option>
+        <option value="Herc Farkle MECH">Herc Farkle MECH</option>
+        <option value="Garth Barker MECH">Garth Barker MECH</option>
+        <option value="Mikey Woodrow MECH">Mikey Woodrow MECH</option>
+        <option value="Astro Star MECH">Astro Star MECH</option>
+        <option value="Hank Glompus MECH">Hank Glompus MECH</option>
+        <option value="John Delporte MECH">John Delporte MECH</option>
+        <option value="Evie Delporte MECH">Evie Delporte MECH</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="plateNumber">Plate Number:</label>
+      <input type="text" id="plateNumber" placeholder="Enter plate number">
+    </div>
+    <div class="form-group">
+      <label for="vehicleModel">Vehicle Model:</label>
+      <input type="text" id="vehicleModel" placeholder="Enter vehicle model">
+    </div>
+    
+    <div class="parts-section">
+      <h2>Parts Applied</h2>
+      <h4>Servicing</h4>
+      <div class="parts-buttons">
+        <button onclick="addPart('Engine Oil', 1000)">Engine Oil</button>
+        <button onclick="addPart('Tire Replacement', 1000)">Tire Replacement</button>
+        <button onclick="addPart('Clutch Replacement', 2000)">Clutch Replacement</button>
+        <button onclick="addPart('Air Filter', 1000)">Air Filter</button>
+        <button onclick="addPart('Spark Plug', 300)">Spark Plug</button>
+        <button onclick="addPart('Suspension Parts', 2000)">Suspension Parts</button>
+        <button onclick="addPart('Brakepad Replacement', 300)">Brakepad Replacement</button>
+        <button onclick="addPart('Full Service', 15000)">Full Service</button>
+      </div>
+
+      <h4>Tuning</h4>
+      <div class="parts-buttons">
+        <button onclick="addPart('Ceramic Brakes', 25000)">Ceramic Brakes</button>
+        <button onclick="addPart('I4 Engine', 30000)">I4 Engine</button>
+        <button onclick="addPart('V6 Engine', 45000)">V6 Engine</button>
+        <button onclick="addPart('V8 Engine', 100000)">V8 Engine</button>
+        <button onclick="addPart('V12 Engine', 500000)">V12 Engine</button>
+        <button onclick="addPart('AWD Drivetrain', 50000)">AWD Drivetrain</button>
+        <button onclick="addPart('RWD Drivetrain', 50000)">RWD Drivetrain</button>
+        <button onclick="addPart('FWD Drivetrain', 50000)">FWD Drivetrain</button>
+        <button onclick="addPart('Turbocharging', 35000)">Turbocharging</button>
+        <button onclick="addPart('Slick Tyres', 11000)">Slick Tyres</button>
+        <button onclick="addPart('Semi-Slick Tyres', 11000)">Semi-Slick Tyres</button>
+        <button onclick="addPart('Offroad Tyres', 11000)">Offroad Tyres</button>
+      </div>
+
+      <h4>Customization</h4>
+      <div class="parts-buttons">
+        <button onclick="addPart('Body Kit', 5000)">Body Kit</button>
+        <button onclick="addPart('Respray Kit', 3000)">Respray Kit</button>
+        <button onclick="addPart('Stance Kit', 10000)">Stance Kit</button>
+        <button onclick="addPart('Lighting Controller', 5000)">Lighting Controller</button>
+        <button onclick="addPart('Performance Part', 20000)">Performance Part</button>
+        <button onclick="addPart('Drift Tuning Kit', 100000)">Drift Tuning Kit</button>
+        <button onclick="addPart('Vehicle Wheels', 12000)">Vehicle Wheels</button>
+        <button onclick="addPart('Extras Kit', 3000)">Extras Kit</button>
+        <button onclick="addPart('Tyre Smoke', 3000)">Tyre Smoke</button>
+      </div>
+
+      <h4>Repairs</h4>
+      <div class="parts-buttons">
+        <button onclick="addPart('At Shop Repair', 3500)">At Shop Repair</button>
+        <button onclick="addPart('In-City Repair', 6000)">In-City Repair</button>
+        <button onclick="addPart('Outside of City Repair', 8500)">Outside of City Repair</button>
+      </div>
+
+      <h4>Shop Specials/Promotions</h4>
+      <div class="parts-buttons">
+        <button onclick="addPart('PD Repair', 2000)">PD Repair</button>
+      </div>
+    </div>
+    
+    <div id="total">Total: $0</div>
+    <div id="installedParts" class="parts-applied">
+      <h4>Installed Parts</h4>
+      <div id="partsList"></div>
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="undoLastAction()" class="undo">Undo Last Action</button>
+      <button onclick="sendToDiscord()">Send Discord Log</button>
+      <button onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+  <footer>
+    Copyright 2024 Jade City Mech Command. All rights reserved.
+  </footer>
+
+  <script>
+    let partsApplied = {};
+    let lastAction = null;
+    let total = 0;
+
+    function addPart(part, price) {
+      if (partsApplied[part]) {
+        partsApplied[part]++;
+      } else {
+        partsApplied[part] = 1;
+      }
+      total += price;
+      document.getElementById('total').textContent = 'Total: $' + total;
+      lastAction = { type: 'add', part, price };
+      updatePartsApplied();
+    }
+
+    function updatePartsApplied() {
+      const partsContainer = document.getElementById('partsApplied');
+      if (partsContainer) {
+        partsContainer.innerHTML = '';
+        for (const [part, count] of Object.entries(partsApplied)) {
+          const partItem = document.createElement('div');
+          partItem.textContent = `${part} x${count}`;
+          partsContainer.appendChild(partItem);
+        }
+      }
+
+      const partsList = document.getElementById('partsList');
+      if (partsList) {
+        partsList.innerHTML = '';
+        for (const [part, count] of Object.entries(partsApplied)) {
+          const listItem = document.createElement('div');
+          listItem.textContent = `${part} x${count}`;
+          partsList.appendChild(listItem);
+        }
+      }
+    }
+
+    function undoLastAction() {
+      if (lastAction?.type === 'add') {
+        const { part, price } = lastAction;
+        if (partsApplied[part] > 1) {
+          partsApplied[part]--;
+        } else {
+          delete partsApplied[part];
+        }
+        total -= price;
+        document.getElementById('total').textContent = 'Total: $' + total;
+        updatePartsApplied();
+        lastAction = null;
+      }
+    }
+
+    function clearAll() {
+      partsApplied = {};
+      total = 0;
+      document.getElementById('total').textContent = 'Total: $0';
+      updatePartsApplied();
+    }
+
+    function sendToDiscord() {
+      const generalWebhookURL = "https://discord.com/api/webhooks/1319519817442660414/KhBih1B7xImoJOZN5w1pHrFKcZ2AmtERj8Odx-i5OzLyXj2Qwe4quzbqUUdxuFB6lvAN"; // Replace with your actual webhook URL
+      const pdRepairWebhookURL = "https://discord.com/api/webhooks/1328540858831863870/PMi_83VSGsMVnb66ZVedEaZKhUVF60g7mZYKVrG_GUEKZIU_Tr84jALegi4HB-Hc9FkB"; // Replace with your actual PD Repair webhook URL
+
+      const logData = {
+        content: "**Mechanic Log Submission**",
+        embeds: [
+          {
+            title: "Mechanic Log Details",
+            color: 3447003,
+            fields: [
+              { name: "Customer Name", value: document.getElementById('customerName').value || 'N/A', inline: true },
+              { name: "Mechanic", value: document.getElementById('mechanicName').value || 'N/A', inline: true },
+              { name: "Plate Number", value: document.getElementById('plateNumber').value || 'N/A', inline: true },
+              { name: "Vehicle Model", value: document.getElementById('vehicleModel').value || 'N/A', inline: true },
+              {
+                name: "Parts Applied",
+                value: Object.entries(partsApplied)
+                  .map(([part, count]) => `${part} x${count}`)
+                  .join('\n') || "No parts applied",
+                inline: false,
+              },
+              { name: "Total Price", value: `$${total}`, inline: false }
+            ],
+          },
+        ],
+      };
+
+      const webhookURL = partsApplied["PD Repair"] ? pdRepairWebhookURL : generalWebhookURL;
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(logData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("Log successfully sent to Discord!");
+          } else {
+            alert("Failed to send the log. Please check the webhook URL.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error sending log to Discord:", error);
+          alert("An error occurred while sending the log.");
+        });
+    }
+  </script>
+</body>
+</html>
